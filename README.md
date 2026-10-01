@@ -36,25 +36,57 @@ An unofficial terminal tool for the **Fellow Aiden** coffee brewer, in Rust.
 
 ## Install
 
+### Homebrew (macOS and Linux)
+
 ```bash
-brew install mohammadalijf/tap/lazyaiden   # macOS and Linux: both binaries, man pages, completions
+brew install mohammadalijf/tap/lazyaiden
 ```
 
-Archives for macOS and Linux (arm64 and x86_64) are attached to every
-[GitHub release](https://github.com/mohammadalijf/lazyaiden/releases). From source:
-`cargo install --git https://github.com/mohammadalijf/lazyaiden lazyaiden-tui lazyaiden-cli`.
+This taps [mohammadalijf/homebrew-tap](https://github.com/mohammadalijf/homebrew-tap) and installs:
+
+* `lazyaiden`, the TUI, and `lazyaiden-cli`, the headless CLI;
+* man pages: `man lazyaiden`, `man lazyaiden-cli`, and one per subcommand (`man lazyaiden-cli-profile-push`);
+* bash, zsh and fish completions for both commands (see
+  [Homebrew's shell completion docs](https://docs.brew.sh/Shell-Completion) if zsh doesn't pick them up).
+
+Keep it up to date with the rest of your Homebrew packages:
+
+```bash
+brew upgrade lazyaiden
+```
+
+Release candidates are published as a separate, opt-in formula. It conflicts with the stable one, so
+uninstall that first:
+
+```bash
+brew uninstall lazyaiden && brew install mohammadalijf/tap/lazyaiden-rc
+```
+
+### Pre-built archives
+
+Every [GitHub release](https://github.com/mohammadalijf/lazyaiden/releases) has a
+`lazyaiden-vX.Y.Z-<target>.tar.gz` for macOS and Linux on arm64 and x86_64, with both binaries, the man
+pages and the completions, plus a `.sha256` checksum. Put the binaries on your `PATH` and the `man/` pages
+in a `man1` directory on your `MANPATH`.
+
+### From source
+
+Needs Rust 1.88+ (see [Requirements](#requirements)):
+
+```bash
+cargo install --git https://github.com/mohammadalijf/lazyaiden lazyaiden-tui lazyaiden-cli
+lazyaiden-cli man --dir ~/.cargo/share/man/man1   # optional: man pages for the CLI
+```
 
 ## Quick start
 
 ```bash
-cargo build --release            # binaries: target/release/lazyaiden and target/release/lazyaiden-cli
-
 # Try everything without an account (offline, sample data, state is lost on exit)
-target/release/lazyaiden --demo
-target/release/lazyaiden-cli --demo profile list
+lazyaiden --demo
+lazyaiden-cli --demo profile list
 
 # Real account: store credentials once (verified, then kept in the OS keychain)
-target/release/lazyaiden-cli login
+lazyaiden-cli login
 
 lazyaiden-cli profile list                    # local + remote, with sync state
 lazyaiden-cli profile add -i profile.yaml     # headless import (use -i - for stdin)
