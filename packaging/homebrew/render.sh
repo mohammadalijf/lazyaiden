@@ -13,9 +13,9 @@ dist=${2:?usage: render.sh VERSION DIST_DIR}
 repo=${GITHUB_REPOSITORY:-mohammadalijf/lazyaiden}
 
 if [[ $version == *-* ]]; then
-  class=LazyaidenRc conflicts=lazyaiden
+  class=LazyaidenRc
 else
-  class=Lazyaiden conflicts=lazyaiden-rc
+  class=Lazyaiden
 fi
 
 sha() {
@@ -32,7 +32,6 @@ sha_linux_x86=$(sha x86_64-unknown-linux-gnu)
 
 sed \
   -e "s|@CLASS@|$class|g" \
-  -e "s|@CONFLICTS@|$conflicts|g" \
   -e "s|@VERSION@|$version|g" \
   -e "s|@BASE_URL@|https://github.com/$repo/releases/download/v$version|g" \
   -e "s|@SHA_AARCH64_APPLE_DARWIN@|$sha_mac_arm|g" \

@@ -27,7 +27,9 @@ class @CLASS@ < Formula
     end
   end
 
-  conflicts_with "@CONFLICTS@", because: "both install the lazyaiden and lazyaiden-cli binaries"
+  # No `conflicts_with "lazyaiden(-rc)"`: Homebrew 7 loads the other formula to check it and refuses,
+  # since only the formula being installed is trusted. Both install the same files, so linking still
+  # refuses to put them side by side.
 
   def install
     bin.install "lazyaiden", "lazyaiden-cli"
