@@ -14,6 +14,7 @@
 
 #![warn(missing_docs)]
 
+pub mod cli;
 pub mod effects;
 pub mod forms;
 pub mod model;
@@ -21,5 +22,6 @@ pub mod runtime;
 pub mod state;
 pub mod ui;
 
+pub use cli::Args;
 pub use runtime::run;
 pub use state::{App, Effect, Event, Msg};

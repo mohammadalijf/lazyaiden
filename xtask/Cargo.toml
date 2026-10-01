@@ -1,0 +1,19 @@
+[package]
+name = "xtask"
+description = "Release tooling for the lazyaiden workspace (not published)"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+publish = false
+
+[dependencies]
+lazyaiden-cli = { path = "../apps/lazyaiden-cli" }
+lazyaiden-tui = { path = "../apps/lazyaiden-tui" }
+clap = "4"
+clap_complete = "4"
+clap_mangen = "0.3"
+
+[lints]
+workspace = true

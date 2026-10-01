@@ -1,0 +1,16 @@
+# Categories for GitHub's auto-generated release notes, picked by PR label.
+changelog:
+  exclude:
+    labels: [skip-changelog]
+    authors: [dependabot]
+  categories:
+    - title: ⚠️ Breaking changes
+      labels: [breaking]
+    - title: ✨ Features
+      labels: [feature, enhancement]
+    - title: 🐛 Fixes
+      labels: [bug, fix]
+    - title: 📚 Documentation
+      labels: [documentation]
+    - title: Other changes
+      labels: ["*"]

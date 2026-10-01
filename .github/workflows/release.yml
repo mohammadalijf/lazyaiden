@@ -1,0 +1,198 @@
+name: Release
+
+# Pushing a tag `vX.Y.Z` (or `vX.Y.Z-rc.N`) builds both apps for macOS and Linux, publishes a
+# GitHub release with one archive per target, and updates the Homebrew tap:
+#   stable     -> Formula/lazyaiden.rb     (brew install mohammadalijf/tap/lazyaiden)
+#   prerelease -> Formula/lazyaiden-rc.rb  (brew install mohammadalijf/tap/lazyaiden-rc)
+# See docs/releasing.md.
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  verify:
+    runs-on: ubuntu-22.04
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      prerelease: ${{ steps.version.outputs.prerelease }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Linux deps (keyring)
+        run: sudo apt-get update && sudo apt-get install -y libdbus-1-dev pkg-config
+      - uses: Swatinem/rust-cache@v2
+      - name: Tag matches the workspace version
+        id: version
+        run: |
+          tag=${GITHUB_REF_NAME}
+          version=${tag#v}
+          cargo_version=$(cargo metadata --no-deps --format-version 1 \
+            | jq -r '.packages[] | select(.name == "lazyaiden-cli") | .version')
+          if [[ "$version" != "$cargo_version" ]]; then
+            echo "::error::tag $tag does not match the workspace version $cargo_version in Cargo.toml"
+            exit 1
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          if [[ "$version" == *-* ]]; then
+            echo "prerelease=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "prerelease=false" >> "$GITHUB_OUTPUT"
+          fi
+      - run: cargo test --workspace --all-features --locked
+
+  assets:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Linux deps (keyring)
+        run: sudo apt-get update && sudo apt-get install -y libdbus-1-dev pkg-config
+      - uses: Swatinem/rust-cache@v2
+      - name: Render man pages and shell completions
+        run: cargo xtask dist-assets dist-assets
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist-assets
+          path: dist-assets/
+          if-no-files-found: error
+
+  build:
+    needs: [verify, assets]
+    strategy:
+      fail-fast: true
+      matrix:
+        include:
+          - { target: aarch64-apple-darwin, os: macos-latest }
+          - { target: x86_64-apple-darwin, os: macos-latest }
+          # 22.04 keeps the glibc requirement low for older distros.
+          - { target: x86_64-unknown-linux-gnu, os: ubuntu-22.04 }
+          - { target: aarch64-unknown-linux-gnu, os: ubuntu-22.04-arm }
+    runs-on: ${{ matrix.os }}
+    env:
+      TARGET: ${{ matrix.target }}
+      VERSION: ${{ needs.verify.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+      - name: Linux deps (keyring)
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y libdbus-1-dev pkg-config
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: ${{ matrix.target }}
+      - name: Build
+        run: cargo build --release --locked --target "$TARGET" -p lazyaiden-tui -p lazyaiden-cli
+      - name: Smoke test
+        # The x86_64 macOS binary is cross-compiled on an arm64 runner.
+        if: matrix.target != 'x86_64-apple-darwin'
+        run: |
+          target/$TARGET/release/lazyaiden --version | grep -F "$VERSION"
+          target/$TARGET/release/lazyaiden-cli --version | grep -F "$VERSION"
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist-assets
+          path: dist-assets
+      - name: Package
+        run: |
+          name="lazyaiden-v$VERSION-$TARGET"
+          mkdir -p "dist/$name"
+          cp "target/$TARGET/release/lazyaiden" "target/$TARGET/release/lazyaiden-cli" "dist/$name/"
+          cp -R dist-assets/man dist-assets/completions LICENSE README.md "dist/$name/"
+          cd dist
+          tar -czf "$name.tar.gz" "$name"
+          shasum -a 256 "$name.tar.gz" > "$name.tar.gz.sha256"
+          cat "$name.tar.gz.sha256"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: archive-${{ matrix.target }}
+          path: |
+            dist/*.tar.gz
+            dist/*.sha256
+          if-no-files-found: error
+
+  release:
+    needs: [verify, build]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      TAG: ${{ github.ref_name }}
+      PRERELEASE: ${{ needs.verify.outputs.prerelease }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: archive-*
+          path: dist
+          merge-multiple: true
+      - name: Publish GitHub release
+        run: |
+          if gh release view "$TAG" > /dev/null 2>&1; then
+            # Re-run of a failed workflow: refresh the assets, keep the notes.
+            gh release upload "$TAG" dist/* --clobber
+            exit 0
+          fi
+          args=(--title "$TAG" --generate-notes --verify-tag)
+          if [[ "$PRERELEASE" == "true" ]]; then
+            args+=(--prerelease)
+          else
+            # Notes for a stable release cover everything since the previous stable one,
+            # not just the changes since its last release candidate.
+            prev=$(git tag --list 'v*' --sort=-v:refname | grep -v -- '-' | grep -vxF "$TAG" | head -n1 || true)
+            [[ -n "$prev" ]] && args+=(--notes-start-tag "$prev")
+            args+=(--latest)
+          fi
+          gh release create "$TAG" "${args[@]}" dist/*
+
+  homebrew:
+    needs: [verify, release]
+    runs-on: ubuntu-latest
+    env:
+      VERSION: ${{ needs.verify.outputs.version }}
+      PRERELEASE: ${{ needs.verify.outputs.prerelease }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: mohammadalijf/homebrew-tap
+          token: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+          path: tap
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: archive-*
+          path: dist
+          merge-multiple: true
+      - name: Render formula
+        run: |
+          if [[ "$PRERELEASE" == "true" ]]; then formula=lazyaiden-rc; else formula=lazyaiden; fi
+          mkdir -p tap/Formula
+          packaging/homebrew/render.sh "$VERSION" dist > "tap/Formula/$formula.rb"
+          echo "FORMULA=$formula" >> "$GITHUB_ENV"
+      - name: Push to tap
+        working-directory: tap
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "Formula/$FORMULA.rb"
+          if git diff --cached --quiet; then
+            echo "Formula already up to date"
+            exit 0
+          fi
+          git commit -m "$FORMULA $VERSION"
+          git push

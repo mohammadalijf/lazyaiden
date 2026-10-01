@@ -3630,6 +3630,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "xtask"
+version = "0.1.0"
+dependencies = [
+ "clap",
+ "clap_complete",
+ "clap_mangen",
+ "lazyaiden-cli",
+ "lazyaiden-tui",
+]
+
+[[package]]
 name = "yoke"
 version = "0.8.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
