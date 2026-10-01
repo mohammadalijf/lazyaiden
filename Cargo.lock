@@ -861,7 +861,7 @@ checksum = "da7c62ceae207dd37ea5b845da6a0696c799f85e97da1ab5b7910be3c1c80223"
 
 [[package]]
 name = "fellow-client"
-version = "0.1.0"
+version = "0.1.0-rc.1"
 dependencies = [
  "async-trait",
  "fellow-client",
@@ -1537,7 +1537,7 @@ checksum = "20870f649af7073d53e38067b2a84312175d56ea15217e1b15bc83506ec50afb"
 
 [[package]]
 name = "lazyaiden-cli"
-version = "0.1.0"
+version = "0.1.0-rc.1"
 dependencies = [
  "assert_cmd",
  "clap",
@@ -1557,7 +1557,7 @@ dependencies = [
 
 [[package]]
 name = "lazyaiden-core"
-version = "0.1.0"
+version = "0.1.0-rc.1"
 dependencies = [
  "async-trait",
  "fellow-client",
@@ -1575,7 +1575,7 @@ dependencies = [
 
 [[package]]
 name = "lazyaiden-profiles"
-version = "0.1.0"
+version = "0.1.0-rc.1"
 dependencies = [
  "fellow-client",
  "proptest",
@@ -1589,7 +1589,7 @@ dependencies = [
 
 [[package]]
 name = "lazyaiden-schedules"
-version = "0.1.0"
+version = "0.1.0-rc.1"
 dependencies = [
  "fellow-client",
  "proptest",
@@ -1599,7 +1599,7 @@ dependencies = [
 
 [[package]]
 name = "lazyaiden-tui"
-version = "0.1.0"
+version = "0.1.0-rc.1"
 dependencies = [
  "arboard",
  "base64 0.22.1",
@@ -3631,7 +3631,7 @@ dependencies = [
 
 [[package]]
 name = "xtask"
-version = "0.1.0"
+version = "0.1.0-rc.1"
 dependencies = [
  "clap",
  "clap_complete",
