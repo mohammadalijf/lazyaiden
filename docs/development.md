@@ -8,7 +8,7 @@ cargo test --workspace --all-features        # unit, integration, snapshot and d
 RUSTDOCFLAGS="-D warnings" cargo doc --workspace --no-deps --all-features
 ```
 
-CI (`.github/workflows/ci.yml`) runs the same commands.
+CI (`.github/workflows/ci.yml`) runs the same commands. Releases are covered in [releasing.md](releasing.md).
 
 ## Test strategy
 

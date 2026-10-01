@@ -34,6 +34,16 @@ An unofficial terminal tool for the **Fellow Aiden** coffee brewer, in Rust.
   needed; your real profiles and config are left untouched. Pass `--profiles-dir` to keep the demo's local
   profiles between runs (e.g. to try the TUI and the CLI on the same files).
 
+## Install
+
+```bash
+brew install mohammadalijf/tap/lazyaiden   # macOS and Linux: both binaries, man pages, completions
+```
+
+Archives for macOS and Linux (arm64 and x86_64) are attached to every
+[GitHub release](https://github.com/mohammadalijf/lazyaiden/releases). From source:
+`cargo install --git https://github.com/mohammadalijf/lazyaiden lazyaiden-tui lazyaiden-cli`.
+
 ## Quick start
 
 ```bash
