@@ -1,0 +1,34 @@
+---
+source: apps/lazyaiden-tui/tests/render.rs
+expression: shot(&t)
+---
+┌ 1 Profiles ────────────────────────────┐┌ Details ─────────────────────────────────────────────────────────┐
+│! [C] Gone                              ││Gone                                                              │
+│✓ [C] In Sync                           ││linked, but missing on the brewer                                 │
+│+     Local Only                        ││                                                                  │
+│~ [C] Modified                          ││file    gone                                                      │
+│↓ [C] Remote Only                       ││remote  p4  (created by you)                                      │
+│                                        ││                                                                  │
+│                                        ││Ratio         1:16                                                │
+│                                        ││Bloom         on · 2× · 30s · 96°C                                │
+│                                        ││Single-serve  on · 3 pulses · every 20s · 96, 96, 96              │
+│                                        ││Batch         on · 3 pulses · every 20s · 96, 96, 96              │
+│                                        ││                                                                  │
+│                                        ││                                                                  │
+└─────────────────────────────────────┌ Confirm ──────────────────────┐                                      │
+┌ 2 Schedules ────────────────────────│Delete local file gone? [y/n]  │                                      │
+│● 07:30 weekdays In Sync             └───────────────────────────────┘                                      │
+│                                        ││                                                                  │
+│                                        ││                                                                  │
+│                                        ││                                                                  │
+│                                        ││                                                                  │
+│                                        ││                                                                  │
+│                                        ││                                                                  │
+└────────────────────────────────────────┘│                                                                  │
+┌ 3 Device ──────────────────────────────┐│                                                                  │
+│▸ Aiden (b1)                            ││                                                                  │
+│                                        ││                                                                  │
+│                                        ││                                                                  │
+│                                        ││                                                                  │
+└────────────────────────────────────────┘└──────────────────────────────────────────────────────────────────┘
+y yes  n no                                                                                         Aiden (b1)

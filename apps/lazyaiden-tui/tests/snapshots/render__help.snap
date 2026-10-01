@@ -1,0 +1,34 @@
+---
+source: apps/lazyaiden-tui/tests/render.rs
+expression: shot(&t)
+---
+┌ 1 Profiles ────────────────────────────┐┌ Details ─────────────────────────────────────────────────────────┐
+│! [C] Gone                              ││Gone                                                              │
+│✓ [C] In Sync                           ││linked, but missing on the brewer                                 │
+│+     Local Only        ┌ Keys ────────────────────────────────────────────────────┐                        │
+│~ [C] Modified          │Tab / 1 2 3     switch panel                              │                        │
+│↓ [C] Remote Only       │j k ↑ ↓  g G    move / first / last                       │                        │
+│                        │r               refresh from the brewer                   │                        │
+│                        │b               choose brewer                             │                        │
+│                        │                                                          │                        │
+│                        │Profiles                                                  │96, 96, 96              │
+│                        │n               new profile (template)                    │96, 96, 96              │
+│                        │e / Enter       edit in a form                            │                        │
+│                        │E               edit the YAML in $EDITOR                  │                        │
+└────────────────────────│i / x           import / export a YAML file               │                        │
+┌ 2 Schedules ───────────│p / P           push to / pull from the brewer            │                        │
+│● 07:30 weekdays In Sync│U / D           push all / pull all                       │                        │
+│                        │d               delete                                    │                        │
+│                        │s / L           copy share link / import link             │                        │
+│                        │f               show / hide Fellow profiles               │                        │
+│                        │[F] [C]         made by Fellow / created by you           │                        │
+│                        │                                                          │                        │
+│                        │Schedules                                                 │                        │
+└────────────────────────│n  t  d         new / toggle / delete                     │                        │
+┌ 3 Device ──────────────│                                                          │                        │
+│▸ Aiden (b1)            │? q Ctrl-C      help / quit                               │                        │
+│                        └──────────────────────────────────────────────────────────┘                        │
+│                                        ││                                                                  │
+│                                        ││                                                                  │
+└────────────────────────────────────────┘└──────────────────────────────────────────────────────────────────┘
+any key closes help                                                                                 Aiden (b1)

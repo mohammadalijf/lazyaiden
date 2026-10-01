@@ -1,0 +1,40 @@
+[package]
+name = "lazyaiden-core"
+description = "Composition root for Aiden: configuration, credentials, device selection and service wiring"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+
+[features]
+# Adds `Aiden::demo`, a pre-seeded in-memory backend for trying the apps without an account.
+demo = ["fellow-client/testing", "dep:tempfile"]
+
+[dependencies]
+lazyaiden-profiles = { path = "../lazyaiden-profiles" }
+lazyaiden-schedules = { path = "../lazyaiden-schedules" }
+async-trait = "0.1.92"
+fellow-client = { path = "../fellow-client" }
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.151"
+tempfile = { version = "3", optional = true }
+thiserror = "2.0.21"
+toml = "0.9"
+
+[target.'cfg(target_os = "macos")'.dependencies]
+keyring = { version = "3.6", features = ["apple-native"] }
+[target.'cfg(target_os = "windows")'.dependencies]
+keyring = { version = "3.6", features = ["windows-native"] }
+[target.'cfg(not(any(target_os = "macos", target_os = "windows")))'.dependencies]
+keyring = { version = "3.6", features = ["sync-secret-service", "crypto-rust"] }
+
+[dev-dependencies]
+fellow-client = { path = "../fellow-client", features = ["testing"] }
+serde_json = "1.0.151"
+tempfile = "3"
+tokio = { version = "1.53.1", features = ["macros", "rt"] }
+wiremock = "0.6.5"
+
+[lints]
+workspace = true

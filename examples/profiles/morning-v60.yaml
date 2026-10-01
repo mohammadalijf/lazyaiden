@@ -1,0 +1,17 @@
+# Aiden profile. Field names match the Fellow API (camelCase).
+# Allowed values are documented in docs/profile-format.md.
+profileType: 0
+title: Morning V60
+ratio: 16.0              # 1:x brew ratio, 14–20 in 0.5 steps
+bloomEnabled: true
+bloomRatio: 2.0          # 1–3 in 0.5 steps
+bloomDuration: 35        # seconds, 1–120
+bloomTemperature: 96.0   # °C, 50–98.5 in 0.5 steps
+ssPulsesEnabled: true    # single-serve pulses
+ssPulsesNumber: 3        # 1–10
+ssPulsesInterval: 20     # seconds, 5–60
+ssPulseTemperatures: [96.0, 95.5, 95.0]
+batchPulsesEnabled: true
+batchPulsesNumber: 3
+batchPulsesInterval: 25
+batchPulseTemperatures: [96.0, 95.5, 95.0]

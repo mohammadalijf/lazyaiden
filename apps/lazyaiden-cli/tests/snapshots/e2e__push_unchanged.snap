@@ -1,0 +1,5 @@
+---
+source: apps/lazyaiden-cli/tests/e2e.rs
+expression: "h.ok(&[\"profile\", \"push\", \"--all\"]).await"
+---
+unchanged  morning-v60 -> p1

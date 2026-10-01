@@ -1,0 +1,13 @@
+---
+source: apps/lazyaiden-cli/tests/e2e.rs
+expression: "json(&h.ok(&[\"--json\", \"profile\", \"push\", \"morning-v60\"]).await)"
+---
+{
+  "results": [
+    {
+      "action": "created",
+      "name": "morning-v60",
+      "remoteId": "p1"
+    }
+  ]
+}

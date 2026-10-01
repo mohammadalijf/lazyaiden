@@ -1,0 +1,33 @@
+[package]
+name = "lazyaiden-tui"
+description = "Terminal UI for Aiden: browse and edit Fellow Aiden profiles and schedules, LazyGit style"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+
+[lib]
+name = "lazyaiden_tui"
+path = "src/lib.rs"
+
+[[bin]]
+name = "lazyaiden"
+path = "src/main.rs"
+
+[dependencies]
+lazyaiden-core = { path = "../../crates/lazyaiden-core", features = ["demo"] }
+arboard = { version = "3", default-features = false }
+base64 = "0.22"
+clap = { version = "4", features = ["derive"] }
+ratatui = "0.29"
+serde_json = "1.0.151"
+tokio = { version = "1.53.1", features = ["rt-multi-thread", "macros", "sync", "time"] }
+
+[dev-dependencies]
+fellow-client = { path = "../../crates/fellow-client", features = ["testing"] }
+insta = "1"
+tempfile = "3"
+
+[lints]
+workspace = true

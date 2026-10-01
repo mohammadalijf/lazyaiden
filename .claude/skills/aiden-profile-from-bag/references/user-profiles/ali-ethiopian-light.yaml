@@ -1,0 +1,21 @@
+profileType: 0
+title: Ali Ethiopian Light
+ratio: 16.5
+bloomEnabled: true
+bloomRatio: 3.0
+bloomDuration: 45
+bloomTemperature: 96.0
+ssPulsesEnabled: true
+ssPulsesNumber: 3
+ssPulsesInterval: 20
+ssPulseTemperatures:
+- 95.0
+- 93.0
+- 91.0
+batchPulsesEnabled: true
+batchPulsesNumber: 3
+batchPulsesInterval: 30
+batchPulseTemperatures:
+- 95.0
+- 93.0
+- 91.0

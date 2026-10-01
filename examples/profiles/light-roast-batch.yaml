@@ -1,0 +1,15 @@
+profileType: 0
+title: Light Roast Batch
+ratio: 15.5
+bloomEnabled: true
+bloomRatio: 3.0
+bloomDuration: 45
+bloomTemperature: 98.0
+ssPulsesEnabled: false
+ssPulsesNumber: 1
+ssPulsesInterval: 20
+ssPulseTemperatures: [98.0]
+batchPulsesEnabled: true
+batchPulsesNumber: 4
+batchPulsesInterval: 20
+batchPulseTemperatures: [98.0, 97.5, 97.0, 96.5]

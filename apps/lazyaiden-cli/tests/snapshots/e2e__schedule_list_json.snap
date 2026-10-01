@@ -1,0 +1,26 @@
+---
+source: apps/lazyaiden-cli/tests/e2e.rs
+expression: "json(&h.ok(&[\"--json\", \"schedule\", \"list\"]).await)"
+---
+{
+  "schedules": [
+    {
+      "days": "weekdays",
+      "enabled": true,
+      "id": "s2",
+      "profileId": "p1",
+      "profileTitle": "Morning V60",
+      "time": "07:30",
+      "waterMl": 500
+    },
+    {
+      "days": "weekends",
+      "enabled": false,
+      "id": "s3",
+      "profileId": "p1",
+      "profileTitle": "Morning V60",
+      "time": "09:15",
+      "waterMl": 750
+    }
+  ]
+}

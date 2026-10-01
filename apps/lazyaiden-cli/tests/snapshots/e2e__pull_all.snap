@@ -1,0 +1,6 @@
+---
+source: apps/lazyaiden-cli/tests/e2e.rs
+expression: "h.ok(&[\"profile\", \"pull\", \"--all\"]).await"
+---
+unchanged  morning-v60 <- p1
+created    elsewhere <- p2

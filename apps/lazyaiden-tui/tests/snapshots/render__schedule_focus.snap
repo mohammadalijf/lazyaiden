@@ -1,0 +1,34 @@
+---
+source: apps/lazyaiden-tui/tests/render.rs
+expression: shot(&t)
+---
+┌ 1 Profiles ────────────────────────────┐┌ Schedule ────────────────────────────────────────────────────────┐
+│! [C] Gone                              ││id        s5                                                      │
+│✓ [C] In Sync                           ││enabled   yes                                                     │
+│+     Local Only                        ││days      weekdays                                                │
+│~ [C] Modified                          ││time      07:30                                                   │
+│↓ [C] Remote Only                       ││water     500 ml                                                  │
+│                                        ││profile   In Sync (p2)                                            │
+│                                        ││                                                                  │
+│                                        ││                                                                  │
+│                                        ││                                                                  │
+│                                        ││                                                                  │
+│                                        ││                                                                  │
+│                                        ││                                                                  │
+└────────────────────────────────────────┘│                                                                  │
+┌ 2 Schedules ───────────────────────────┐│                                                                  │
+│● 07:30 weekdays In Sync                ││                                                                  │
+│                                        ││                                                                  │
+│                                        ││                                                                  │
+│                                        ││                                                                  │
+│                                        ││                                                                  │
+│                                        ││                                                                  │
+│                                        ││                                                                  │
+└────────────────────────────────────────┘│                                                                  │
+┌ 3 Device ──────────────────────────────┐│                                                                  │
+│▸ Aiden (b1)                            ││                                                                  │
+│                                        ││                                                                  │
+│                                        ││                                                                  │
+│                                        ││                                                                  │
+└────────────────────────────────────────┘└──────────────────────────────────────────────────────────────────┘
+n new  t toggle  d delete  r refresh  Tab panel  ? help  q quit                                     Aiden (b1)
