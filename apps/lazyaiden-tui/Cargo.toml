@@ -20,7 +20,7 @@ lazyaiden-core = { path = "../../crates/lazyaiden-core", features = ["demo"] }
 arboard = { version = "3", default-features = false }
 base64 = "0.22"
 clap = { version = "4", features = ["derive"] }
-ratatui = "0.29"
+ratatui = "0.30"
 serde_json = "1.0.151"
 tokio = { version = "1.53.1", features = ["rt-multi-thread", "macros", "sync", "time"] }
 
